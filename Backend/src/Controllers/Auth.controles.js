@@ -27,15 +27,15 @@ export async function login(req, res) {
     }
     const refreshToken = generateRefresh(user);
     const accessToken = generateAccess(user);
-    
+
     user.refreshToken.push({ token: refreshToken });
     // user.refreshToken.push(refreshToken);
 
     await user.save();
 
     res.cookie("refreshToken", refreshToken, {
-        secure: true,        // 🔥 MUST be true in production (HTTPS)
-  sameSite: "None", 
+      secure: true,        // 🔥 MUST be true in production (HTTPS)
+      sameSite: "None",
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
@@ -49,35 +49,37 @@ export async function login(req, res) {
 export async function signup(req, res) {
   const { name, email, password } = req.body;
 
-  const hashPassword = await bcrypt.hash(password, 10);
-  const existingUser = await Users.findOne({ email });
-if (existingUser) {
-  return res.status(400).json({ message: "Email already exists" });
-}
   try {
+    const hashPassword = await bcrypt.hash(password, 10);
+    const existingUser = await Users.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
     const user = await Users.create({
       email,
       name,
       password: hashPassword,
     });
 
-//     const refreshToken = generateRefresh(user);
-//     const accessToken = generateAccess(user);
-//     user.refreshToken = [{ token: refreshToken }];
-// await user.save();
+    //     const refreshToken = generateRefresh(user);
+    //     const accessToken = generateAccess(user);
+    //     user.refreshToken = [{ token: refreshToken }];
+    // await user.save();
 
-//     res.cookie("refreshToken", refreshToken, {
-//       secure: false,
-//       httpOnly: true,
-//       maxAge: 1000 * 60 * 60 * 24 * 7,
-//     });
-return res.status(201).json({
-//   token: accessToken,
-  message: "signup sucsses fully please login"
-});
+    //     res.cookie("refreshToken", refreshToken, {
+    //       secure: false,
+    //       httpOnly: true,
+    //       maxAge: 1000 * 60 * 60 * 24 * 7,
+    //     });
+    return res.status(201).json({
+      //   token: accessToken,
+      message: "signup sucsses fully please login"
+    });
   } catch (err) {
     console.error(err.message);
-    return res.status(500);
+    return res.status(500).json({
+      error: err.message,
+    });
   }
 }
 
@@ -122,9 +124,9 @@ export async function refreshToken(req, res) {
     await user.save();
 
     res.cookie("refreshToken", refreshToken, {
-   
-        secure: true,        // 🔥 MUST be true in production (HTTPS)
-  sameSite: "None", 
+
+      secure: true,        // 🔥 MUST be true in production (HTTPS)
+      sameSite: "None",
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 7,
     });
