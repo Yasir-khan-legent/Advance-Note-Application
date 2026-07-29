@@ -5,30 +5,28 @@ import Notes from "./src/Routes/Notes.routes.js";
 import Conection from "./src/Config/Mongodb.config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-
 dotenv.config()
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
-const allowedOrigins = [process.env.FRONTEND_URL]; 
 
+const allowedOrigins = [process.env.FRONTEND_URL];
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
+
+
 Conection()
 
 
-app.use('/auth' ,auth )
-app.use('/notes' ,Notes )
+app.get("/test", (req, res) => {
+  res.json({ message: "Backend OK" });
+});
+
+
+app.use('/auth', auth)
+app.use('/notes', Notes)
 
 
 
