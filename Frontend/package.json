@@ -2,7 +2,7 @@
   "name": "vite-project",
   "private": true,
   "version": "0.0.0",
-   "homepage": "https://yasir-khan-legent.github.io/Advance-Note-App-Frontend",
+   "homepage": "https://advance-note-application-e4aq.vercel.app",
   "type": "module",
   "scripts": {
     "dev": "vite",
