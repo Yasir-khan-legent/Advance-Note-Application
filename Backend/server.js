@@ -12,13 +12,7 @@ app.use(cookieParser())
 
 const allowedOrigins = [process.env.FRONTEND_URL];
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-}));
-
-app.options("*", cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
+  origin: "*",
 }));
 
 
