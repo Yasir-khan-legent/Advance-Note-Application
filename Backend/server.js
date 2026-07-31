@@ -11,15 +11,15 @@ app.use(express.json())
 app.use(cookieParser())
 
 const allowedOrigins = [
-  "https://advance-note-application-e4aq.vercel.app"
+  process.env.FRONTEND_URL
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
+  origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error("CORS blocked"));
     }
   },
   credentials: true,
