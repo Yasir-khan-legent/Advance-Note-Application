@@ -1,17 +1,17 @@
 import express from "express";
-import dotenv from "dotenv";
+import dotenv from "dotenv/config";
 import auth from "./src/Routes/Auth.routes.js";
 import Notes from "./src/Routes/Notes.routes.js";
 import Conection from "./src/Config/Mongodb.config.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-dotenv.config()
+
 const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL
+  process.env.FRONTEND_URL?.trim()
 ];
 
 app.use(cors({
